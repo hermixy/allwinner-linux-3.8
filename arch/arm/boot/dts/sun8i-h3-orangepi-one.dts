@@ -54,7 +54,6 @@
 
 	aliases {
 		serial0 = &uart0;
-               lcd0 = &lcd0;
 	};
 
 	chosen {
@@ -93,33 +92,6 @@
 
 &ehci1 {
 	status = "okay";
-};
-
-&ccu {
-	/* force some rates and parents */
-	assigned-clocks = <&ccu 9 /*CLK_PLL_PERIPH0*/>, <&ccu 12 /*CLK_PLL_PERIPH1*/>, <&ccu 13 /*CLK_PLL_DE*/>, <&ccu CLK_I2S0>, <&ccu CLK_I2S1>, <&ccu CLK_I2S2>;
-        assigned-clock-parents = <0>, <0>, <0>, <&ccu 2 /*CLK_PLL_AUDIO*/>, <&ccu 2 /*CLK_PLL_AUDIO*/>, <&ccu 2 /*CLK_PLL_AUDIO*/>;
-        assigned-clock-rates = <600000000>, <600000000>, <864000000>, <0>, <0>, <0>;
-};
-
-&de {
-        status = "okay";
-};
-
-&hdmi {
-        status = "okay";
-};
-
-&i2s2 {
-        status = "okay";
-};
-
-&lcd0 {
-        status = "okay";
-};
-
-&ehci1 {
-        status = "okay";
 };
 
 &mmc0 {

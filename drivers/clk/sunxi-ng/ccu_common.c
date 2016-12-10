@@ -25,21 +25,13 @@ static DEFINE_SPINLOCK(ccu_lock);
 
 void ccu_helper_wait_for_lock(struct ccu_common *common, u32 lock)
 {
-	int i;
+	u32 reg;
 
 	if (!lock)
 		return;
 
-	for(i=0; i<200; i++)
-	{
-		if(readl(common->base + common->reg) & lock)
-		{
-			udelay(500);
-			return;
-		}
-		udelay(100);
-	}
-	pr_err("Clock %s failed to lock!\n", clk_hw_get_name(&common->hw));
+	WARN_ON(readl_relaxed_poll_timeout(common->base + common->reg, reg,
+					   reg & lock, 100, 70000));
 }
 
 int sunxi_ccu_probe(struct device_node *node, void __iomem *reg,

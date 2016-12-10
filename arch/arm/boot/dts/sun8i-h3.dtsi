@@ -140,16 +140,6 @@
 		#size-cells = <1>;
 		ranges;
 
-		de: de-controller@01000000 {
-			compatible = "allwinner,sun8i-h3-display-engine";
-			reg = <0x01000000 0x400000>;
-			clocks = <&ccu CLK_DE>, <&ccu CLK_BUS_DE>;
-			clock-names = "clock", "gate";
-			resets = <&ccu RST_BUS_DE>;
-			ports = <&lcd0_p>;
-			status = "disabled";
-		};
-
 		dma: dma-controller@01c02000 {
 			compatible = "allwinner,sun8i-h3-dma";
 			reg = <0x01c02000 0x1000>;
@@ -157,23 +147,6 @@
 			clocks = <&ccu CLK_BUS_DMA>;
 			resets = <&ccu RST_BUS_DMA>;
 			#dma-cells = <1>;
-		};
-
-		lcd0: lcd-controller@01c0c000 {
-			compatible = "allwinner,sun8i-h3-lcd";
-			reg = <0x01c0c000 0x400>;
-			clocks = <&ccu CLK_TCON0>, <&ccu CLK_BUS_TCON0>;
-			clock-names = "clock", "gate";
-			resets = <&ccu RST_BUS_TCON0>;
-			interrupts = <GIC_SPI 86 IRQ_TYPE_LEVEL_HIGH>;
-			status = "disabled";
-			#address-cells = <1>;
-			#size-cells = <0>;
-			lcd0_p: port {
-				lcd0_hdmi: endpoint {
-					remote-endpoint = <&hdmi_lcd0>;
-				};
-			};
 		};
 
 		mmc0: mmc@01c0f000 {
@@ -427,23 +400,6 @@
 			interrupts = <GIC_SPI 25 IRQ_TYPE_LEVEL_HIGH>;
 		};
 
-		i2s2: i2s@1c22800 {
-			compatible = "allwinner,sun8i-h3-hdmi-audio";
-			reg = <0x01c22800 0x60>;
-			clocks = <&ccu 2 /*CLK_PLL_AUDIO*/>, <&ccu CLK_I2S2>, <&ccu CLK_BUS_I2C2>;
-			clock-names = "clock", "i2s2", "gate";
-			resets = <&ccu RST_BUS_I2S2>;
-			dmas = <&dma 27>;
-			dma-names = "tx";
-			status = "disabled";
-			port {
-				port-type = "i2s";
-				i2s2_hdmi: endpoint {
-					remote-endpoint = <&hdmi_i2s2>;
-				};
-			};
-		};
-
 		uart0: serial@01c28000 {
 			compatible = "snps,dw-apb-uart";
 			reg = <0x01c28000 0x400>;
@@ -519,32 +475,6 @@
 			interrupt-controller;
 			#interrupt-cells = <3>;
 			interrupts = <GIC_PPI 9 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_HIGH)>;
-		};
-
-		hdmi: hdmi@01ee0000 {
-			compatible = "allwinner,sun8i-h3-hdmi";
-			reg = <0x01ee0000 0x20000>;
-			clocks = <&ccu CLK_HDMI>, <&ccu CLK_HDMI_DDC>, <&ccu CLK_BUS_HDMI>;
-			clock-names = "clock", "ddc-clock", "gate";
-			resets = <&ccu RST_BUS_HDMI0>, <&ccu RST_BUS_HDMI1>;
-			reset-names = "hdmi0", "hdmi1";
-			status = "disabled";
-			#address-cells = <1>;
-			#size-cells = <0>;
-			port@0 {
-				reg = <0>;
-				port-type = "video";
-				hdmi_lcd0: endpoint {
-					remote-endpoint = <&lcd0_hdmi>;
-				};
-			};
-			port@1 {
-				reg = <1>;
-				port-type = "audio-i2s";
-				hdmi_i2s2: endpoint {
-					remote-endpoint = <&i2s2_hdmi>;
-				};
-			};
 		};
 
 		rtc: rtc@01f00000 {
